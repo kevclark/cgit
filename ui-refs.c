@@ -87,7 +87,7 @@ static int print_branch(struct refinfo *ref)
 	return 0;
 }
 
-static void print_tag_header()
+static void print_tag_header(void)
 {
 	html("<tr class='nohover'><th class='left'>Tag</th>"
 	     "<th class='left'>Download</th>"
@@ -229,7 +229,7 @@ void cgit_print_tags(int maxcount)
 		print_refs_link("tags");
 }
 
-void cgit_print_refs()
+void cgit_print_refs(void)
 {
 
 	html("<table class='list nowrap'>");

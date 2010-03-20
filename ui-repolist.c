@@ -213,7 +213,7 @@ int sort_repolist(char *field)
 }
 
 
-void cgit_print_repolist()
+void cgit_print_repolist(void)
 {
 	int i, columns = 4, hits = 0, header = 0;
 	char *last_section = NULL;
@@ -292,7 +292,7 @@ void cgit_print_repolist()
 	cgit_print_docend();
 }
 
-void cgit_print_site_readme()
+void cgit_print_site_readme(void)
 {
 	if (!ctx.cfg.root_readme)
 		return;

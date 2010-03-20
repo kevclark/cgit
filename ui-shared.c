@@ -34,7 +34,7 @@ void cgit_print_error(char *msg)
 	html("</div>\n");
 }
 
-char *cgit_httpscheme()
+char *cgit_httpscheme(void)
 {
 	if (ctx.env.https && !strcmp(ctx.env.https, "on"))
 		return "https://";
@@ -42,7 +42,7 @@ char *cgit_httpscheme()
 		return "http://";
 }
 
-char *cgit_hosturl()
+char *cgit_hosturl(void)
 {
 	if (ctx.env.http_host)
 		return ctx.env.http_host;
@@ -53,7 +53,7 @@ char *cgit_hosturl()
 	return xstrdup(fmt("%s:%s", ctx.env.server_name, ctx.env.server_port));
 }
 
-char *cgit_rooturl()
+char *cgit_rooturl(void)
 {
 	if (ctx.cfg.virtual_root)
 		return fmt("%s/", ctx.cfg.virtual_root);
@@ -121,7 +121,7 @@ const char *cgit_repobasename(const char *reponame)
 	return rvbuf;
 }
 
-char *cgit_currurl()
+char *cgit_currurl(void)
 {
 	if (!ctx.cfg.virtual_root)
 		return ctx.cfg.script_name;
@@ -319,14 +319,14 @@ void cgit_log_link(char *name, char *title, char *class, char *head,
 void cgit_commit_link(char *name, char *title, char *class, char *head,
 		      char *rev, int toggle_ssdiff)
 {
+	char *delim;
+
 	if (strlen(name) > ctx.cfg.max_msg_len && ctx.cfg.max_msg_len >= 15) {
 		name[ctx.cfg.max_msg_len] = '\0';
 		name[ctx.cfg.max_msg_len - 1] = '.';
 		name[ctx.cfg.max_msg_len - 2] = '.';
 		name[ctx.cfg.max_msg_len - 3] = '.';
 	}
-
-	char *delim;
 
 	delim = repolink(title, class, "commit", head, NULL);
 	if (rev && strcmp(rev, ctx.qry.head)) {
@@ -503,13 +503,14 @@ void cgit_print_http_headers(struct cgit_context *ctx)
 
 void cgit_print_docstart(struct cgit_context *ctx)
 {
+	char *host = cgit_hosturl();
+
 	if (ctx->cfg.embedded) {
 		if (ctx->cfg.header)
 			html_include(ctx->cfg.header);
 		return;
 	}
 
-	char *host = cgit_hosturl();
 	html(cgit_doctype);
 	html("<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>\n");
 	html("<head>\n");
@@ -543,7 +544,7 @@ void cgit_print_docstart(struct cgit_context *ctx)
 		html_include(ctx->cfg.header);
 }
 
-void cgit_print_docend()
+void cgit_print_docend(void)
 {
 	html("</div> <!-- class=content -->\n");
 	if (ctx.cfg.embedded) {

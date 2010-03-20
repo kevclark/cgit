@@ -248,7 +248,7 @@ static void header(unsigned char *sha1, char *path1, int mode1,
 	html("</div>");
 }
 
-static void print_ssdiff_link()
+static void print_ssdiff_link(void)
 {
 	if (!strcmp(ctx.qry.page, "diff")) {
 		if (use_ssdiff)

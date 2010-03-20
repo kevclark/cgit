@@ -182,7 +182,7 @@ static int ls_item(const unsigned char *sha1, const char *base, int baselen,
 	return 0;
 }
 
-static void ls_head()
+static void ls_head(void)
 {
 	html("<table summary='tree listing' class='list'>\n");
 	html("<tr class='nohover'>");
@@ -194,7 +194,7 @@ static void ls_head()
 	header = 1;
 }
 
-static void ls_tail()
+static void ls_tail(void)
 {
 	if (!header)
 		return;

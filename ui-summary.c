@@ -48,7 +48,7 @@ static void print_urls(char *txt, char *suffix)
 	}
 }
 
-void cgit_print_summary()
+void cgit_print_summary(void)
 {
 	html("<table summary='repository info' class='list nowrap'>");
 	cgit_print_branches(ctx.cfg.summary_branches);
