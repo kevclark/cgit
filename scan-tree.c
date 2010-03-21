@@ -2,15 +2,15 @@
 #include "configfile.h"
 #include "html.h"
 
-#define MAX_PATH 4096
+#define MAX_FILEPATH 4096
 
 /* return 1 if path contains a objects/ directory and a HEAD file */
 static int is_git_dir(const char *path)
 {
 	struct stat st;
-	static char buf[MAX_PATH];
+	static char buf[MAX_FILEPATH];
 
-	if (snprintf(buf, MAX_PATH, "%s/objects", path) >= MAX_PATH) {
+	if (snprintf(buf, MAX_FILEPATH, "%s/objects", path) >= MAX_FILEPATH) {
 		fprintf(stderr, "Insanely long path: %s\n", path);
 		return 0;
 	}

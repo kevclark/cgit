@@ -17,21 +17,33 @@ struct authorstat {
 
 static void trunc_week(struct tm *tm)
 {
+#ifdef __MINGW__
+	time_t t = mktime(tm);
+#else
 	time_t t = timegm(tm);
+#endif
 	t -= ((tm->tm_wday + 6) % 7) * DAY_SECS;
 	gmtime_r(&t, tm);	
 }
 
 static void dec_week(struct tm *tm)
 {
+#ifdef __MINGW__
+	time_t t = mktime(tm);
+#else
 	time_t t = timegm(tm);
+#endif
 	t -= WEEK_SECS;
 	gmtime_r(&t, tm);	
 }
 
 static void inc_week(struct tm *tm)
 {
+#ifdef __MINGW__
+	time_t t = mktime(tm);
+#else
 	time_t t = timegm(tm);
+#endif
 	t += WEEK_SECS;
 	gmtime_r(&t, tm);	
 }
@@ -40,7 +52,11 @@ static char *pretty_week(struct tm *tm)
 {
 	static char buf[10];
 
+#ifdef __MINGW__
+	strftime(buf, sizeof(buf), "W%W %y", tm);
+#else
 	strftime(buf, sizeof(buf), "W%V %G", tm);
+#endif
 	return buf;
 }
 
