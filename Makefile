@@ -45,7 +45,6 @@ ifneq (,$(findstring MINGW,$(uname_S)))
 	NO_LIBGEN_H = YesPlease
 	NO_SYMLINK_HEAD = YesPlease
 	NO_SETENV = YesPlease
-	NO_UNSETENV = YesPlease
 	NO_STRCASESTR = YesPlease
 	NO_STRLCPY = YesPlease
 	NO_MEMMEM = YesPlease
@@ -69,14 +68,13 @@ ifneq (,$(findstring MINGW,$(uname_S)))
 	NO_REGEX = YesPlease
 	NO_PYTHON = YesPlease
 	BLK_SHA1 = YesPlease
-	COMPAT_CFLAGS += -D__USE_MINGW_ACCESS -DNOGDI -DNO_MMAP -DNO_REGEX -DNO_SETENV -DNO_STRLCPY -D__MINGW__ -Igit/compat -Igit/compat/fnmatch -Igit/compat/win32 -Igit/compat/regex
+	COMPAT_CFLAGS += -D__USE_MINGW_ACCESS -DNOGDI -DNO_MMAP -DNO_SETENV -DNO_REGEX -DNO_STRLCPY -D__MINGW__ -Igit/compat -Igit/compat/fnmatch -Igit/compat/win32 -Igit/compat/regex
 	COMPAT_CFLAGS += -DSTRIP_EXTENSION=\".exe\"
 	# We have GCC, so let's make use of those nice options
 #	COMPAT_CFLAGS += -Werror -Wno-pointer-to-int-cast \
 #	        -Wold-style-definition -Wdeclaration-after-statement
 	COMPAT_CFLAGS += -Werror -Wno-pointer-to-int-cast
-	COMPAT_OBJS += git/compat/mingw.o git/compat/fnmatch/fnmatch.o git/compat/winansi.o \
-		git/compat/win32/pthread.o
+	COMPAT_OBJS += git/compat/mingw.o git/compat/setenv.o git/compat/fnmatch/fnmatch.o git/compat/winansi.o git/compat/win32/pthread.o
 	PTHREAD_LIBS =
 	CFLAGS += $(COMPAT_CFLAGS)
 	OBJECTS += $(COMPAT_OBJS)
@@ -205,7 +203,11 @@ test: all
 
 install: all
 	$(INSTALL) -m 0755 -d $(DESTDIR)$(CGIT_SCRIPT_PATH)
+ifdef __MINGW__
+	$(INSTALL) -m 0755 cgit.exe $(DESTDIR)$(CGIT_SCRIPT_PATH)/$(CGIT_SCRIPT_NAME)
+else	
 	$(INSTALL) -m 0755 cgit $(DESTDIR)$(CGIT_SCRIPT_PATH)/$(CGIT_SCRIPT_NAME)
+endif
 	$(INSTALL) -m 0755 -d $(DESTDIR)$(CGIT_DATA_PATH)
 	$(INSTALL) -m 0644 cgit.css $(DESTDIR)$(CGIT_DATA_PATH)/cgit.css
 	$(INSTALL) -m 0644 cgit.png $(DESTDIR)$(CGIT_DATA_PATH)/cgit.png

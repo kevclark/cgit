@@ -14,6 +14,7 @@
 #include "ui-shared.h"
 #include "ui-stats.h"
 #include "scan-tree.h"
+#include "exec_cmd.h"
 
 const char *cgit_version = CGIT_VERSION;
 
@@ -681,6 +682,8 @@ int main(int argc, const char **argv)
 	const char *path;
 	char *qry;
 	int err, ttl;
+
+	git_extract_argv0_path(argv[0]);
 
 	prepare_context(&ctx);
 	cgit_repolist.length = 0;
