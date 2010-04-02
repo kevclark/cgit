@@ -682,6 +682,15 @@ int main(int argc, const char **argv)
 	const char *path;
 	char *qry;
 	int err, ttl;
+	const char * const iis = getenv("USING_IIS");
+
+	/* IIS pipes stderr to stdout and anything appearing no
+	 * on stderr will also appear in the generated hthml.
+	 * So this bascially removed all stderr output from the
+	 * html.
+	 */
+	if((iis != NULL) && (*iis == 'Y'))
+		freopen("/dev/null", "w", stderr);
 
 	git_extract_argv0_path(argv[0]);
 
