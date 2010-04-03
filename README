@@ -80,6 +80,64 @@ The generated content contains the complete response to the client, including
 the http-headers "Modified" and "Expires".
 
 
+Notes for building cgit on Windows
+
+Cgit can be built with the build environment from msysGit.  This instruction
+assumes you have at least msysGit-fullinstall-1.7.0.2 installed to provide the
+mingw GNU tools.
+
+
+Makefile modification for Apache on Windows
+
+Since cgit will be built under the msysgit/mingw environment, use the mingw
+path location of where cgit will be installed under Apache, eg:
+
+CGIT_SCRIPT_PATH = /c/Program\ Files/Apache\ Software\ Foundation/Apache2.2/
+htdocs/cgit
+
+
+Cgit configuration on Windows
+
+When Apache is running it does so via a Windows service so paths in the cgit
+config file that point to your git repositories should be a Windows path and
+not mingw, eg:
+
+repo.url=ProjectA
+repo.path=c:/gitrepos/ProjectA.git
+repo.desc=Simple test console app
+
+
+Runtime configuration on Windows
+
+When deploying cgit on Windows you should install the standard version of
+msysGit (Git-1.7.0.2) which is a standard Windows installer.
+
+Note: That this can be installed alongside msysGit-fullinstall-1.7.0.2, which
+is self-contained and does not alter the Windows path.
+
+During the installation of Git-1.7.0.2 a dialog will ask if the windows path
+should be modified:
+
+1) Leave the Windows path unmodified, Git will only be available from the mingw
+bash shell.
+2) Run Git from the Windows command prompt, this will add only Git to the
+system path.
+3) Run Git and Unix tools from the Windows command prompt, this will add Git
+and other Unix cmd tools to the path, eg Unix versions of find.exe, sort.exe,
+ls.exe etc.
+
+If 1) is selected you will have to make sure that when the Apache service is
+run that it can see Git.exe.
+
+Selecting 3) will override some of the standard Windows cmd tools, but cgit
+will work correctly under Apache this way.
+
+Selecting 2) is probably the safest option and will not alter any of the
+Windows cmd tools.  However if 2) is selected you will need to copy
+libiconv2.dll from the msysGit-fullinstall-1.7.0.2 build environment
+(c:\msysgit\msysgit\mingw\bin\) into where cgit was installed under Apache.
+
+
 The missing features
 
 * Submodule links in the directory listing page have a fixed format per
